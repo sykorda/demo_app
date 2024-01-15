@@ -48,8 +48,30 @@ if files is not None:
         st.sidebar.write(e)
 
 
-st.title("Ask chat :D")
+
 openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+ask_buy = (f'3 reasons to buy {ticker} stock')
+ask_sell = (f'3 reasons to sell {ticker} stock')
+buy = openai.chat.completions.create(
+    model="gpt-3.5-turbo",messages=[{'role':"user","content":ask_buy}]
+)
+response_message_buy = buy.choices[0].message.content
+
+sell = openai.chat.completions.create(
+    model="gpt-3.5-turbo",messages=[{'role':"user","content":ask_sell}]
+)
+response_message_sell = sell.choices[0].message.content
+
+buy_, sell_ = st.tabs(['Why to buy','Why to sell'])
+with buy_:
+    st.write(response_message_buy)
+
+with sell_:
+    st.write(response_message_sell)
+
+
+st.title("Ask chat :D")
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
@@ -83,9 +105,3 @@ if prompt:
             message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
-
-    
-    
-
-
-
