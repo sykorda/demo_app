@@ -1,4 +1,6 @@
 import streamlit as st
+import appdirs as ad
+ad.user_cache_dir = lambda *args: "/tmp"
 import yfinance as yf 
 from snowflake.snowpark import Session
 import pandas as pd
