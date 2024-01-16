@@ -51,24 +51,25 @@ if files is not None:
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-ask_buy = (f'3 reasons to buy {ticker} stock')
-ask_sell = (f'3 reasons to sell {ticker} stock')
-buy = openai.chat.completions.create(
-    model="gpt-3.5-turbo",messages=[{'role':"user","content":ask_buy}]
-)
-response_message_buy = buy.choices[0].message.content
+ask_buy = (f'3 short reasons to buy {ticker} stock')
+ask_sell = (f'3 short reasons to sell {ticker} stock')
+if st.button('Generate reasons why to buy and sell'):
+    buy = openai.chat.completions.create(
+        model="gpt-3.5-turbo",messages=[{'role':"user","content":ask_buy}]
+    )
+    response_message_buy = buy.choices[0].message.content
 
-sell = openai.chat.completions.create(
-    model="gpt-3.5-turbo",messages=[{'role':"user","content":ask_sell}]
-)
-response_message_sell = sell.choices[0].message.content
+    sell = openai.chat.completions.create(
+        model="gpt-3.5-turbo",messages=[{'role':"user","content":ask_sell}]
+    )
+    response_message_sell = sell.choices[0].message.content
 
-buy_, sell_ = st.tabs(['Why to buy','Why to sell'])
-with buy_:
-    st.write(response_message_buy)
+    buy_, sell_ = st.tabs(['Why to buy','Why to sell'])
+    with buy_:
+        st.write(response_message_buy)
 
-with sell_:
-    st.write(response_message_sell)
+    with sell_:
+        st.write(response_message_sell)
 
 
 st.title("Ask chat :D")
